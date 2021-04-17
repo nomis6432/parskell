@@ -7,10 +7,10 @@ import Data.Map.Strict as Map
 
 
 -- | The different states of the game
---   Finished : succesfully finished executing. [Int] is result list
+--   Finished : succesfully finished executing. [Int] is result list and tInt the cost
 --   Failed : Something went wrong. String explains error, Int
 --   Running : game is running
-data GameState a = Finished [Int] | Failed String | Running (a, [Int], [Int], Map.Map Int Int, Int)
+data GameState a = Finished [Int] Int | Failed String | Running (a, [Int], [Int], Map.Map Int Int, Int)
   deriving (Show)
 
 newtype GameM a = GameM {gameM:: [Int] -> [Int] -> Map.Map Int Int -> Int -> GameState a}
@@ -26,7 +26,7 @@ instance Monad GameM where
     GameM (\inp out vars cost ->
       case gameM p inp out vars cost of
         Failed x -> Failed x
-        Finished x -> Finished x
+        Finished x cost -> Finished x cost
         Running (res, inp', out', vars', cost') ->
           gameM (f res) inp' out' vars' cost')
   return = pure
@@ -36,7 +36,7 @@ getInput :: GameM Int
 getInput = GameM (\inp out vars cost ->
   case inp of
     (i:inp') -> Running (i, inp', out, vars, cost)
-    _        -> Finished (reverse out))
+    _        -> Finished (reverse out) cost)
 
 -- puts a value in the output
 putOutput :: Int -> GameM ()

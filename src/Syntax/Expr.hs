@@ -215,8 +215,6 @@ instance (EvalGame sub1, EvalGame sub2) => EvalGame (sub1 :+: sub2) where
   evalGame (InjR s) = evalGame s
 
 
--- fold
-
 evalGameDen :: (EvalGame s) => AST s sig -> DenotationM GameM sig
 evalGameDen = go
   where
@@ -230,6 +228,8 @@ instance Eval NUM where
   evalSym Sub     = (Prel.-)
   evalSym Mul     = (Prel.*)
   evalSym Pow     = (Prel.^)
+
+-- TODO:: generate EvalGane from Eval for NUM and Logic
 
 instance EvalGame NUM where
   evalGame (Num n) = return n
@@ -358,6 +358,8 @@ evalGameCostDen = go
     go (Sym s)  = evalGameCost s
     go (s :$ a) = go s $ go a
 
+-- TODO:: Make more generic
+
 instance EvalGameCost NUM where
   evalGameCost (Num n) = do
     addCost (costAlg (Num n))
@@ -374,3 +376,65 @@ instance EvalGameCost NUM where
   evalGameCost Pow     = \a b -> do
     addCost (costAlg (Pow))
     evalGame (Pow) a b
+
+instance EvalGameCost Logic where
+  evalGameCost (Bl b) = do
+    addCost (costAlg (Bl b))
+    evalGame (Bl b)
+  evalGameCost Not     = \a -> do
+    addCost (costAlg (Not))
+    evalGame (Not) a
+  evalGameCost Eq     = \a b -> do
+    addCost (1) -- THIS SHOULDNT BE HARDCODED!!!
+    evalGame (Eq) a b
+  evalGameCost Lt     = \a b -> do
+    addCost (1)
+    evalGame (Lt) a b
+  evalGameCost Lteq     = \a b -> do
+    addCost (1)
+    evalGame (Lteq) a b
+  evalGameCost Gt     = \a b -> do
+    addCost (1)
+    evalGame (Gt) a b
+  evalGameCost Gteq     = \a b -> do
+    addCost (1)
+    evalGame (Gteq) a b
+  evalGameCost And     = \a b -> do
+    addCost (costAlg (And))
+    evalGame (And) a b
+  evalGameCost Or     = \a b -> do
+    addCost (costAlg (Or))
+    evalGame (Or) a b
+
+instance EvalGameCost If where
+  evalGameCost If = \c t f -> do
+    addCost (costAlg If)
+    evalGame If c t f
+
+instance EvalGameCost ExprComb where
+  evalGameCost Pass = do
+    addCost (costAlg Pass)
+    evalGame Pass
+  evalGameCost SemiColumn = \a b -> do
+    addCost (costAlg SemiColumn)
+    evalGame SemiColumn a b
+  evalGameCost Drop = \a -> do
+    addCost (costAlg Drop)
+    evalGame Drop a
+  evalGameCost While = \c a -> do
+    addCost (costAlg While)
+    evalGame While c a
+
+instance EvalGameCost Action where
+  evalGameCost Input = do
+    addCost (costAlg Input)
+    evalGame Input
+  evalGameCost Output = \x -> do
+    addCost (costAlg Output)
+    evalGame Output x
+  evalGameCost Load = \x -> do
+    addCost (costAlg Load)
+    evalGame Load x
+  evalGameCost Save = \x y -> do
+    addCost (costAlg Save)
+    evalGame Save x y
