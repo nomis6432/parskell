@@ -13,6 +13,7 @@ Note: Lists start at 0
 
 solution = expr (
     loop (
-      pass
+      output (input - num 1) $$
+      output (input + num 1)
     )
   )

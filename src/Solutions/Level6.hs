@@ -14,6 +14,13 @@ This shouldn't be very different from the previous level
 
 solution = expr (
     loop (
-      pass
+      save (num 0) input $$
+      save (num 1) (load (num 0)) $$
+      save (num 2) (num 1) $$
+      while (not (load (num 0) == num 0))(
+        save (num 0) (load (num 0) - num 1) $$
+        save (num 2) (load (num 1) * load (num 2))
+      ) $$
+      output (load (num 2))
     )
   )

@@ -15,6 +15,12 @@ You can assume that the size of the list is a multiple of 5
 
 solution = expr (
     loop (
-      pass
+      save (num 0) (num 0) $$
+      save (num 1) (num 0) $$
+      while (load (num 0) < num 5) (
+        save (num 1) (input ** load (num 0) + load (num 1)) $$
+        save (num 0) (load (num 0) + num 1)
+      ) $$
+      output (load (num 1))
     )
   )

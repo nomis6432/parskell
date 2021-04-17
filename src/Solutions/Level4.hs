@@ -19,12 +19,11 @@ you also shouldn't put a $$ at the end of your last expression in your condition
 
 solution = expr (
     loop (
-      pass $$
-      condition (bool True) (
-        pass
+      save (num 0) input $$
+      condition (load (num 0) < num 10) (
+        output (load (num 0))
       ) (
         pass
-      ) $$
-      pass
+      )
     )
   )

@@ -16,7 +16,8 @@ Hint: Don't put a $$ after the last line
 
 solution = expr (
     loop (
-      pass $$
-      pass
+      save (num 0) input $$
+      output input $$
+      output (load (num 0))
     )
   )

@@ -15,10 +15,13 @@ Tip you'll need a lot more variables now
 
 solution = expr (
     loop (
-      pass $$
-      while (bool True) (
-        pass
+      save (num 0) input $$
+      save (num 1) (load (num 0)) $$
+      save (num 2) (num 0) $$
+      while (not (load (num 0) == num 0)) (
+        save (num 0) (load (num 0) - num 1) $$
+        save (num 2) (load (num 1) + load (num 2))
       ) $$
-      pass
+      output (load (num 2))
     )
   )
