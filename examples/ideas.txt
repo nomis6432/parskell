@@ -1,0 +1,9 @@
+concepts:
+- multiple functions
+- laziness
+- support different types
+
+levels:
+- int -> [int] (nat numbers)
+- [int] -> int (veelterm eval)
+- no brackets ?

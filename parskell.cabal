@@ -1,0 +1,89 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           parskell
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/nomis6432/parskell#readme>
+homepage:       https://github.com/nomis6432/parskell#readme
+bug-reports:    https://github.com/nomis6432/parskell/issues
+author:         Simon Tas
+maintainer:     simon.tas.st@gmail.com
+copyright:      2021 Simon Tas
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/nomis6432/parskell
+
+library
+  exposed-modules:
+      Checks.Level1
+      Checks.Level2
+      Checks.Level3
+      Checks.Level4
+      Checks.Level5
+      Checks.Level6
+      Checks.Level7
+      Checks.Level8
+      Levels.Level1
+      Levels.Level2
+      Levels.Level3
+      Levels.Level4
+      Levels.Level5
+      Levels.Level6
+      Levels.Level7
+      Levels.Level8
+      Parser.ParseExpr
+      Syntax.Expr
+      Syntax.GameMonad
+      Syntax.Syntax
+      Utils
+  other-modules:
+      Paths_parskell
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , parsec
+    , syntactic >=3.8
+  default-language: Haskell2010
+
+executable parskell-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_parskell
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , parsec
+    , parskell
+    , syntactic >=3.8
+  default-language: Haskell2010
+
+test-suite parskell-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_parskell
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , parsec
+    , parskell
+    , syntactic >=3.8
+  default-language: Haskell2010
